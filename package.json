@@ -1,0 +1,23 @@
+{
+  "name": "techarrow",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "debug": "echo Debug is not supported now",
+    "main": "node main.js",
+    "generate": "echo Running && node scripts/generate.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "pg": "^8.14.1"
+  },
+  "type": "module"
+}

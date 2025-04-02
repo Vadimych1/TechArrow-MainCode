@@ -1,0 +1,1 @@
+INSERT INTO sessions (user_id, expires) VALUES ($1, $2) RETURNING session_id;

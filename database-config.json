@@ -1,0 +1,32 @@
+{
+    "src": {},
+    "api": {
+        "scripts": [
+            "init.js"
+        ]
+    },
+    "database": {
+        "scripts": [
+            "init.js"
+        ],
+        "sql": [
+            "tables.sql",
+            "functions.sql"
+        ],
+        "sql/add": [
+            "REGISTER.sql",
+            "LOGIN.sql",
+            "RESET.sql",
+            "CREATE_SESSION.sql"
+        ],
+        "sql/get": [
+            "USER_ID_BY_COOKIE.sql",
+            "USER_BY_USER_ID.sql"
+        ],
+        "sql/update": [],
+        "sql/delete": [
+            "LOGOUT.sql"
+        ]
+    },
+    "static": []
+}
