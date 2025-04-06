@@ -6,6 +6,7 @@ import UserService from './user.js';
 
 
 let database;
+let logger;
 
 
 const functions = [
@@ -43,7 +44,9 @@ const functions = [
 ];
 
 
-function initialize(app, databaseMethods) {
+function initialize(app, databaseMethods, g_logger) {
+    logger = g_logger;
+
     app.use(express.static("./static/"));
     app.use(express.json());
     app.use(cookieParser());
@@ -54,12 +57,14 @@ function initialize(app, databaseMethods) {
 
     for (const method in functions) {
         const { path, function: handler, method: method_name } = functions[method];
-        app[method_name](path, async (req, res) => await handler(req, res, database));
+        app[method_name](path, async (req, res) => await handler(req, res, database, logger));
     }
 
     database = databaseMethods || {};
     Middleware.setDatabase(database);
-}
+
+    logger.info("Initialized API methods");
+} 
 
 
 export default {

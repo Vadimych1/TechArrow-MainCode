@@ -1,3 +1,13 @@
+<style>
+    :root {
+        font-family: sans-serif;
+    }
+
+    h1 {
+        font-weight: bold;
+    }
+</style>
+
 # API documentation
 ### - AUTH block
 #### 1. /api/auth/register
@@ -47,11 +57,15 @@ On success returns JSON:
 }
 ```
 
+<hr>
+
 # About arguments
 Arguments can be passed to method with:
 1. query string
 2. html form data
 3. json body
+
+<hr>
 
 # Example API usage
 JSON body example usage:

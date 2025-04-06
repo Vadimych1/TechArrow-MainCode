@@ -2,6 +2,8 @@ import fs from 'fs';
 import pg from 'pg';
 const { Client } = pg;
 
+let logger;
+
 const client = new Client({
     user: "postgres",
     password: "postgres",
@@ -53,14 +55,16 @@ const init_scripts = [
     "tables",
 ];
 
-async function initialize() {
+async function initialize(g_logger) {
+    logger = g_logger;
+
     for (const script of init_scripts) {
         const sql = fs.readFileSync(`./database/sql/${script}.sql`, 'utf8');
 
         try {
             await client.query(sql);            
         } catch (err) {
-            console.error(`Error executing SQL script ${script}:\n${sql}\n`, err);
+            logger.error(`Error executing SQL script ${script}:\n${sql}\n`, err);
             process.exit(1);
         }
     }
@@ -77,7 +81,7 @@ async function initialize() {
                     const res = await client.query(sql, args);
                     return res;
                 } catch (err) {
-                    console.error(`Error executing SQL query for ${name}:\n${sql}\n`, err);
+                    logger.error(`Error executing SQL query for ${name}:\n${sql}\n`, err);
                     process.exit(1);
                 }
                 
@@ -85,7 +89,7 @@ async function initialize() {
         }
     }
 
-    console.info("Initialized DB");
+    logger.info("Initialized DB");
     return registered;
 }
 

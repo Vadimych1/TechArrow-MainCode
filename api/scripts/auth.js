@@ -1,7 +1,7 @@
 import Util from "./util.js";
 
 class AuthService {
-    static async register(req, res, database) {
+    static async register(req, res, database, logger) {
         const {_success, username, email, password, phone, age} = await Util.check_args(req, res, [
             "username",
             "email",
@@ -37,6 +37,8 @@ class AuthService {
         res.cookie("session", session, {"maxAge": expires});
     
         await Util.check_redirect(req, res, "/");
+
+        logger.info(`User ${username} registered`);
     }
 
     static async login(req, res, database) {
@@ -77,6 +79,8 @@ class AuthService {
         res.cookie("session", session, {"maxAge": expires});
     
         Util.check_redirect(req, res, "/");
+
+        logger.info(`User ${username} logged in`);
     }
 
     static async reset(req, res, database) {
@@ -95,6 +99,8 @@ class AuthService {
         }
     
         Util.check_redirect(req, res, "/");
+
+        logger.info(`User ${username} logged out`);
     }
 }
 

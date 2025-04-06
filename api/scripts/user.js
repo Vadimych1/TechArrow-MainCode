@@ -11,8 +11,9 @@ class UserService {
      * @param {Object} database Express database object
      * @returns authorized user`s profile
      */
-    static async getProfile(req, res, database) {
+    static async getProfile(req, res, database, logger) {
         if (req.user && req.session) {
+            logger.debug("Returing user profile", req.user?.id);
             res.status(200).send(req.user);
         } else {
             res.status(400).send({});
@@ -27,7 +28,7 @@ class UserService {
      * @param {Object} database Express database object
      * @returns other user`s profile
      */
-    static async getOtherProfile(req, res, database) {
+    static async getOtherProfile(req, res, database, logger) {
         const { _success, user_id } = await Util.check_args(req, res, [
             'user_id',
         ]);
@@ -42,6 +43,8 @@ class UserService {
         } else {
             res.send({});
         }
+
+        logger.debug("Sending profile for " + user_id);
     }
 }
 

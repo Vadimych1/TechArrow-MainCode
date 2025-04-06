@@ -5,7 +5,7 @@ class Middleware {
         database = db;
     }
     
-    static async cookie_auth_mw(req, res, next) {
+    static async cookie_auth_mw(req, res, next, logger) {
         const { cookies } = req;
         if (cookies.session) {
             const result = await database["auth/cookie_user"].run(cookies.session);
@@ -17,11 +17,14 @@ class Middleware {
                 }
             }
         }
+
+        logger.debug("Authentificated user: " + req.session);
+        logger.trace(req.user);
     
         next();
     }
 
-    static async redirect_mw(req, res, next) {
+    static async redirect_mw(req, res, next, logger) {
         if (req.query.redirect) {
             req.redirect_url = req.query.redirect;
             req.redirect = true;
@@ -29,6 +32,8 @@ class Middleware {
             req.redirect_url = null;
             req.redirect = false;
         }
+
+        logger.debug("Redirect URL: " + req.redirect_url);
     
         next();
     }

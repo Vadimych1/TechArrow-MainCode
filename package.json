@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "debug": "echo Debug is not supported now",
-    "main": "node main.js",
+    "main": "node main.js | pino-pretty",
     "generate": "echo Running && node scripts/generate.cjs"
   },
   "keywords": [],
@@ -17,7 +17,12 @@
     "cookie-parser": "^1.4.7",
     "express": "^4.21.2",
     "fs": "^0.0.1-security",
-    "pg": "^8.14.1"
+    "marked-engine": "^0.2.0",
+    "pg": "^8.14.1",
+    "pino": "^9.6.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "pino-pretty": "^13.0.0"
+  }
 }
