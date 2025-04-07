@@ -5,8 +5,9 @@ class Middleware {
         database = db;
     }
     
-    static async cookie_auth_mw(req, res, next, logger) {
+    static async cookie_auth_mw(req, res, next, logger) {        
         const { cookies } = req;
+        
         if (cookies.session) {
             const result = await database["auth/cookie_user"].run(cookies.session);
             if (result.rowCount >= 1) {
@@ -28,10 +29,16 @@ class Middleware {
         if (req.query.redirect) {
             req.redirect_url = req.query.redirect;
             req.redirect = true;
+
+            if (req.query.form_redirect || req.body.form_redirect || req.json?.form_redirect) {
+                req.form_redirect = true;
+            }   
         } else {
             req.redirect_url = null;
             req.redirect = false;
         }
+
+        
 
         logger.debug("Redirect URL: " + req.redirect_url);
     

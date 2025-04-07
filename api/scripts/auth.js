@@ -19,7 +19,7 @@ class AuthService {
         const register_result = await database["auth/register"].run(username, email, age, phone, hashed, salt);
     
         if (register_result.rowCount < 1) {
-            res.status(400).send({"error": "server_error", "message": "Аккаунт уже существует"});
+            res.send({"error": "server_error", "message": "Аккаунт уже существует"});
             return;
         }
     
@@ -29,19 +29,17 @@ class AuthService {
         const session_result = await database["auth/create_session"].run(register_result.rows[0].id, expiresStr);
     
         if (session_result.rowCount < 1) {
-            res.status(418).send({"error": "server_error", "message": "Ошибка при создании сессии. Попробуйте войти"});
+            res.send({"error": "server_error", "message": "Ошибка при создании сессии. Попробуйте войти"});
             return;
         }
     
         const session = session_result.rows[0].session_id;
-        res.cookie("session", session, {"maxAge": expires});
+        res.cookie("session", session, {"maxAge": expires, "domain": "localhost"});
     
         await Util.check_redirect(req, res, "/");
-
-        logger.info(`User ${username} registered`);
     }
 
-    static async login(req, res, database) {
+    static async login(req, res, database, logger) {
         const {_success, email, password} = await Util.check_args(req, res, [
             "email",
             "password",
@@ -53,7 +51,7 @@ class AuthService {
     
         const user_result = await database["auth/login"].run(email);
         if (user_result.rowCount < 1) {
-            res.status(400).send({"error": "bad_request", "message": "Неверный email или пароль"});
+            res.send({"error": "bad_request", "message": "Неверный email или пароль"});
             return;
         }
     
@@ -61,7 +59,7 @@ class AuthService {
     
         const verify_result = await Util.verify_password(password, user.password);
         if (!verify_result) {
-            res.status(401).send({"error": "bad_request", "message": "Неверный email или пароль"});
+            res.send({"error": "bad_request", "message": "Неверный email или пароль"});
             return;
         }
     
@@ -70,37 +68,33 @@ class AuthService {
         const session_result = await database["auth/create_session"].run(user.id, expiresStr);
     
         if (session_result.rowCount < 1) {
-            res.status(418).send({"error": "server_error", "message": "Ошибка при создании сессии. Попробуйте войти ещё раз"});
+            res.send({"error": "server_error", "message": "Ошибка при создании сессии. Попробуйте войти ещё раз"});
             return;
         }
     
         const session = session_result.rows[0].session_id;
     
-        res.cookie("session", session, {"maxAge": expires});
+        res.cookie("session", session, {"maxAge": expires, "domain": "localhost"});
     
         Util.check_redirect(req, res, "/");
-
-        logger.info(`User ${username} logged in`);
     }
 
-    static async reset(req, res, database) {
+    static async reset(req, res, database, logger) {
         res.status(404).send({"error": "not_found", "message": "Неизвестный или нереализованный метод"});
         Util.check_redirect(req, res, "/");
     }
 
-    static async logout(req, res, database) {
+    static async logout(req, res, database, logger) {
         if (req.user && req.session) {
             await database["auth/logout"].run(req.session);
             res.clearCookie("session");
         } else {
             res.clearCookie("session");
-            res.status(401).send({"error": "unauthorized", "message": "Необходима авторизация"});
+            res.send({"error": "unauthorized", "message": "Необходима авторизация"});
             return;
         }
     
         Util.check_redirect(req, res, "/");
-
-        logger.info(`User ${username} logged out`);
     }
 }
 

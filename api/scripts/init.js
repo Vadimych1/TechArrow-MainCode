@@ -51,9 +51,16 @@ function initialize(app, databaseMethods, g_logger) {
     app.use(express.json());
     app.use(cookieParser());
     app.use(express.urlencoded({ extended: true }));
+    app.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', 'http://localhost:3000,http://localhost:3001');
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Allow-Methods');
+        res.header('Access-Control-Allow-Credentials', true);
 
-    app.use(Middleware.cookie_auth_mw);
-    app.use(Middleware.redirect_mw);
+        next();
+    });
+    app.use(async (req, res, next) => Middleware.cookie_auth_mw(req, res, next, logger));
+    app.use(async (req, res, next) => Middleware.redirect_mw(req, res, next, logger));
 
     for (const method in functions) {
         const { path, function: handler, method: method_name } = functions[method];
@@ -64,7 +71,8 @@ function initialize(app, databaseMethods, g_logger) {
     Middleware.setDatabase(database);
 
     logger.info("Initialized API methods");
-} 
+}
+
 
 
 export default {

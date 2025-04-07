@@ -13,6 +13,11 @@ class Util {
     }
 
     static async check_redirect(req, res, fallback=null) {
+        if (req.form_redirect) {
+            res.redirect(req.redirect_url);
+            return;
+        }
+        
         if (req.redirect) {
             res.status(200).send({redirect_url: req.redirect});
         } else if (fallback) {

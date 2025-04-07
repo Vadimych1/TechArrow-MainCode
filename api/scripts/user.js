@@ -13,10 +13,9 @@ class UserService {
      */
     static async getProfile(req, res, database, logger) {
         if (req.user && req.session) {
-            logger.debug("Returing user profile", req.user?.id);
-            res.status(200).send(req.user);
+            res.send(req.user);
         } else {
-            res.status(400).send({});
+            res.send({});
         }
     }
 
