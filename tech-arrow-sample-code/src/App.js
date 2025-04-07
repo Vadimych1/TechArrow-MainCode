@@ -1,7 +1,8 @@
 import './App.css';
 import { useState } from 'react';
 
-// A fetch API wrappers
+// Врапперы для Fetch API
+// для GET запросов
 async function get(addr, data) {
   try {
     return await fetch(addr, {
@@ -17,6 +18,7 @@ async function get(addr, data) {
   }
 }
 
+// и для POST запросов
 async function post(addr, data) {
   try {
     return await fetch(addr, {
@@ -32,9 +34,17 @@ async function post(addr, data) {
   }
 }
 
+
+// Эти две функции можно скопировать в код фронта - они остаются неизменными
+// Если изменить - скорее всего всё сломается
+// ! Для какого запроса нужен POST, а для какого GET - написано в ДОКУМЕНТАЦИИ !
+
+
 function App() {
+  // Создаем Stateful переменную для изменения содержимого сайта
   const [username, changeUsername] = useState(null);
 
+  // Функция для динамического обновления. Берём данные с сервера и записываем в переменную.
   function update() {
     get("http://localhost:3001/api/user/my_profile").then(async (response) => {
       const data = await response.json();
@@ -42,16 +52,23 @@ function App() {
     });
   }
 
+  // Обновляем сразу же при загрузке компонента
   update();
 
   return (
     <div className="App">
+      {/* Форма для входа */}
       <h1>Login</h1>
       <form onSubmit={(e) => {
         e.preventDefault();
+
+        // Берём данные из формы
         const email = e.target.email.value;
         const password = e.target.password.value;
 
+        // Отправляем POST запрос для регистрации
+        // Агрументы НАПИСАНЫ В ДОКУМЕНТАЦИИ
+        // Берём их из филдов формы, можно брать любые значения при необходимости
         post('http://localhost:3001/api/auth/login', {email, password})
          .then(res => res.json())
          .then(data => {
@@ -70,16 +87,22 @@ function App() {
         <button type="submit">Login</button>
       </form>
 
+      {/* Форма для регистрации */}
       <h1>Register</h1>
       <form onSubmit={(e) => {
         e.preventDefault();
+
+        // Берём данные из формы
         const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
         const age = e.target.age.value;
         const phone = e.target.phone.value;
 
-        post('http://localhost:3001/api/auth/login', {email, password, age, phone, name})
+        // Отправляем POST запрос для регистрации
+        // Агрументы НАПИСАНЫ В ДОКУМЕНТАЦИИ
+        // Берём их из филдов формы, можно брать любые значения при необходимости
+        post('http://localhost:3001/api/auth/register', {email, password, age, phone, name})
          .then(res => res.json())
          .then(data => {
             console.log(data);
@@ -100,10 +123,14 @@ function App() {
         <button type="submit">Login</button>
       </form>
       
+      {/* Форма для выхода из аккаунта */}
       <h1>Logout</h1>
       <form onSubmit={(e) => {
         e.preventDefault();
 
+        // Отправляем POST запрос для выхода из аккаунта
+        // НИКАКИХ аргументов НЕ НУЖНО
+        // Всё хранинтся в куки сайта
         post('http://localhost:3001/api/auth/logout', {})
          .then(res => res.json())
          .then(data => {
@@ -120,9 +147,16 @@ function App() {
         <button type="submit">Logout</button>
       </form>
 
+      {/* Отображение нашей динамической переменной */}
       <h1>{username ? `Welcome, ${username}!` : "Not authorized"}</h1>
     </div>
   );
 }
+
+`
+ВАЖНО
+
+Запросы можно отправлять через HTML форму, тогда у запроса нужно указывать "form_redirect": true и дополнительного кода не нужно
+`
 
 export default App;
