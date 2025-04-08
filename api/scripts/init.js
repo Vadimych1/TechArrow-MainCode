@@ -45,6 +45,11 @@ const functions = [
         "path": "/api/user/get_profiles",
         "function": UserService.getProfiles,
         "method": "get",
+    },
+    {
+        "path": "/api/user/update",
+        "function": UserService.updateProfile,
+        "method": "get"
     }
 ];
 

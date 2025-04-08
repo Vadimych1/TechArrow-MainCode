@@ -55,6 +55,38 @@ class UserService {
         const result = await database["user/get_users"].run();
         res.send(result.rows);
     }
+
+    static async updateProfile(req, res, database, logger) {
+        const { _success, name, email, age, phone } = await Util.check_args(req, res, [
+            "name",
+            "email",
+            "age",
+            "phone"
+        ]);
+
+        if (!_success) {
+            console.log("RETURN", _success)
+            return;
+        }
+
+        if (!(req.user && req.session)) {
+            res.send({
+                "error": "not_authorized",
+                "message": "Вы не авторизованы"
+            });
+            return;
+        }
+
+        const result = (await database["user/update"].run(
+            name,
+            email,
+            age,
+            phone,
+            req.user.id,
+        )).rows[0];
+
+        res.send(result ?? {});
+    }
 }
 
 export default UserService;

@@ -24,7 +24,9 @@
             "USER_BY_USER_ID.sql",
             "USERS.sql"
         ],
-        "sql/update": [],
+        "sql/update": [
+            "PROFILE.sql"
+        ],
         "sql/delete": [
             "LOGOUT.sql"
         ]

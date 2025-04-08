@@ -52,6 +52,11 @@ const methods = [
         "name": "user/get_users",
         "type": "get",
         "file": "USERS"
+    },
+    {
+        "name": "user/update",
+        "type": "update",
+        "file": "PROFILE"
     }
 ];
 
@@ -86,7 +91,8 @@ async function initialize(g_logger) {
                     const res = await client.query(sql, args);
                     return res;
                 } catch (err) {
-                    logger.error(`Error executing SQL query for ${name}:\n${sql}\n`, err);
+                    logger.error(`Error executing SQL query for ${name}:\n${sql}\n`);
+                    console.error(err);
                     process.exit(1);
                 }
                 
