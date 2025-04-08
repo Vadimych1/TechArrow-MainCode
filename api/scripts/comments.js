@@ -20,7 +20,7 @@ export default class CommentsService {
         }
 
         const result = (await database["comments/new"].run(text, stars, req.user.id)).rows[0];
-        res.send(result);
+        res.send({});
     }
 
     static async getComments(req, res, database, logger) {

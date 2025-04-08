@@ -32,7 +32,7 @@ class Util {
         let sources = [
             req.query,
             req.body,
-            req.params,
+            req.params
         ];
         for (const arg of required) {
             for (const source of sources) {
