@@ -40,6 +40,11 @@ const functions = [
         "path": "/api/user/other_profile",
         "function": UserService.getOtherProfile,
         "method": "get",
+    },
+    {
+        "path": "/api/user/get_profiles",
+        "function": UserService.getProfiles,
+        "method": "get",
     }
 ];
 
@@ -52,13 +57,14 @@ function initialize(app, databaseMethods, g_logger) {
     app.use(cookieParser());
     app.use(express.urlencoded({ extended: true }));
     app.use((req, res, next) => {
-        res.header('Access-Control-Allow-Origin', 'http://localhost:3000,http://localhost:3001');
+        res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
         res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Allow-Methods');
         res.header('Access-Control-Allow-Credentials', true);
 
         next();
     });
+    
     app.use(async (req, res, next) => Middleware.cookie_auth_mw(req, res, next, logger));
     app.use(async (req, res, next) => Middleware.redirect_mw(req, res, next, logger));
 
@@ -72,7 +78,6 @@ function initialize(app, databaseMethods, g_logger) {
 
     logger.info("Initialized API methods");
 }
-
 
 
 export default {

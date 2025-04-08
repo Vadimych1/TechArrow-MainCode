@@ -24,7 +24,7 @@ class Middleware {
     
         next();
     }
-
+    
     static async redirect_mw(req, res, next, logger) {
         if (req.query.redirect) {
             req.redirect_url = req.query.redirect;
@@ -32,16 +32,14 @@ class Middleware {
 
             if (req.query.form_redirect || req.body.form_redirect || req.json?.form_redirect) {
                 req.form_redirect = true;
-            }   
+            }
         } else {
             req.redirect_url = null;
             req.redirect = false;
         }
 
-        
-
         logger.debug("Redirect URL: " + req.redirect_url);
-    
+        
         next();
     }
 }

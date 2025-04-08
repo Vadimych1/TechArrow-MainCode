@@ -21,7 +21,8 @@
         ],
         "sql/get": [
             "USER_ID_BY_COOKIE.sql",
-            "USER_BY_USER_ID.sql"
+            "USER_BY_USER_ID.sql",
+            "USERS.sql"
         ],
         "sql/update": [],
         "sql/delete": [

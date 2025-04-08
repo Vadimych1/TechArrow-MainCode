@@ -47,6 +47,11 @@ const methods = [
         "name": "auth/create_session",
         "type": "add",
         "file": "CREATE_SESSION"
+    },
+    {
+        "name": "user/get_users",
+        "type": "get",
+        "file": "USERS"
     }
 ];
 

@@ -45,6 +45,16 @@ class UserService {
 
         logger.debug("Sending profile for " + user_id);
     }
+
+    static async getProfiles(req, res, database, logger) {
+        if (!(req.user && req.session)) {
+            res.send([]);
+            return;
+        }
+
+        const result = await database["user/get_users"].run();
+        res.send(result.rows);
+    }
 }
 
 export default UserService;
