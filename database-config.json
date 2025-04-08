@@ -17,12 +17,14 @@
             "REGISTER.sql",
             "LOGIN.sql",
             "RESET.sql",
-            "CREATE_SESSION.sql"
+            "CREATE_SESSION.sql",
+            "COMMENT.sql"
         ],
         "sql/get": [
             "USER_ID_BY_COOKIE.sql",
             "USER_BY_USER_ID.sql",
-            "USERS.sql"
+            "USERS.sql",
+            "COMMENTS.sql"
         ],
         "sql/update": [
             "PROFILE.sql"

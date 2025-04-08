@@ -14,3 +14,10 @@ CREATE TABLE IF NOT EXISTS "sessions" (
     session_id VARCHAR(255) DEFAULT generate_random_varchar() NOT NULL,
     expires TIMESTAMP NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS "comments" (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    text TEXT,
+    stars INTEGER NOT NULL
+);

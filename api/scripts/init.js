@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import AuthService from './auth.js';
 import Middleware from './middleware.js';
 import UserService from './user.js';
-
+import CommentsService from './comments.js';
 
 let database;
 let logger;
@@ -50,6 +50,17 @@ const functions = [
         "path": "/api/user/update",
         "function": UserService.updateProfile,
         "method": "get"
+    },
+
+    {
+        "path": "/api/comments/new",
+        "function": CommentsService.addComment,
+        "method": "post",
+    },
+    {
+        "path": "/api/comments/get",
+        "function": CommentsService.getComments,
+        "method": "get",
     }
 ];
 

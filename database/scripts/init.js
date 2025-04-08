@@ -57,7 +57,19 @@ const methods = [
         "name": "user/update",
         "type": "update",
         "file": "PROFILE"
+    },
+
+    {
+        "name": "comments/get",
+        "type": "get",
+        "file": "COMMENTS",
+    },
+    {
+        "name": "comments/new",
+        "type": "add",
+        "file": "COMMENT",
     }
+
 ];
 
 const init_scripts = [
@@ -74,7 +86,8 @@ async function initialize(g_logger) {
         try {
             await client.query(sql);            
         } catch (err) {
-            logger.error(`Error executing SQL script ${script}:\n${sql}\n`, err);
+            logger.error(`Error executing SQL script ${script}:\n${sql}\n`);
+            logger.error(err);
             process.exit(1);
         }
     }
@@ -92,7 +105,7 @@ async function initialize(g_logger) {
                     return res;
                 } catch (err) {
                     logger.error(`Error executing SQL query for ${name}:\n${sql}\n`);
-                    console.error(err);
+                    logger.error(err);
                     process.exit(1);
                 }
                 
