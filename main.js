@@ -3,14 +3,7 @@ import api from './api/scripts/init.js';
 import express from 'express';
 import { renderFile } from 'marked-engine';
 import pino from 'pino';
-// import https from 'https';
-// import Noise_ from 'noisejs';
 import PNG from 'pngjs';
-
-// const { Noise } = Noise_;
-
-// const noise = new Noise(Math.random());
-
 
 function arrayToPNG(width, height, h, xoff, yoff, z, out) {
     const png = new PNG.PNG({ width, height });
@@ -18,7 +11,7 @@ function arrayToPNG(width, height, h, xoff, yoff, z, out) {
 
     let sum = 0;
 
-    for (const elem of dots[h]) {
+    for (const elem of dots[h - 1]) {
         const dist = Math.sqrt(Math.pow(xoff - elem[0], 2) + Math.pow(yoff - elem[1], 2));
         sum += 88 / Math.max(1, dist / 2);
     }
@@ -26,8 +19,8 @@ function arrayToPNG(width, height, h, xoff, yoff, z, out) {
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
             const index = (y * width + x) * 4;
-            data[index] = h == 1 ? 255 : 40; // Red channel
-            data[index + 1] = h == 2 ? 255 : 30; // Green channel
+            data[index] = h == 1 || h == 4 ? 255 : 40; // Red channel
+            data[index + 1] = h == 2 || h == 4 ? 255 : 30; // Green channel
             data[index + 2] = h == 3 ? 255 : 20; // Blue channel
             data[index + 3] = Math.min(sum, 128); // Alpha channel (fully opaque)
         }
@@ -36,18 +29,6 @@ function arrayToPNG(width, height, h, xoff, yoff, z, out) {
     return png.pack().pipe(out);
 }
 
-// function perlinImage(sx, sy, w, h, divider, g) {
-//     const image = [];
-//     for (let x = 0; x < w; x++) {
-//         const row = [];
-//         for (let y = 0; y < h; y++) {
-//             let value = noise.perlin2(x / divider + g * 1412 + sx, y / divider + g * 1412 + sy);
-//             row.push(Math.abs(value) * 256);
-//         }
-//         image.push(row);
-//     }
-//     return image;
-// }
 
 const logger = pino({ level: 'info' });
 

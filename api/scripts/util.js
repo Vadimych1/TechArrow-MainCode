@@ -43,7 +43,6 @@ class Util {
             }
     
             if (!ret[arg]) {
-                console.log(arg)
                 res.status(400).send({"error": "bad_request", "message": `Обязательный аргумент ${arg} не найден`});
                 return {_success: false}
             }
