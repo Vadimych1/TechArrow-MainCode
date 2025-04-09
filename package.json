@@ -18,8 +18,10 @@
     "express": "^4.21.2",
     "fs": "^0.0.1-security",
     "marked-engine": "^0.2.0",
+    "noisejs": "^2.1.0",
     "pg": "^8.14.1",
-    "pino": "^9.6.0"
+    "pino": "^9.6.0",
+    "pngjs": "^7.0.0"
   },
   "type": "module",
   "devDependencies": {
