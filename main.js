@@ -13,7 +13,8 @@ function arrayToPNG(width, height, h, xoff, yoff, z, out) {
 
     for (const elem of dots[h - 1]) {
         const dist = Math.sqrt(Math.pow(xoff - elem[0], 2) + Math.pow(yoff - elem[1], 2));
-        sum += 88 / Math.max(1, dist / 2);
+        const d = 88 / Math.max(1, dist / 2);
+        sum += d > 40 ? d : 0;
     }
 
     for (let y = 0; y < height; y++) {
